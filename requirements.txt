@@ -1,0 +1,4 @@
+assertpy>=0.14
+pytest
+#kafka-python>=1.4.4
+confluent-kafka==0.11.6
