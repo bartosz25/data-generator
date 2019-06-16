@@ -1,6 +1,6 @@
 from assertpy import assert_that
 
-from helper.percentage import calculate_value
+from data_generator.helper.percentage import calculate_value
 
 
 def should_calculate_correct_percentage_for_25():

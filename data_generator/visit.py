@@ -5,9 +5,9 @@ import uuid
 import random
 import ipaddress
 
-from helper.numbers import get_random_from_list
-from model import entities
-from model.entities import DataAnomaly
+from data_generator.helper.numbers import get_random_from_list
+from data_generator.model import entities
+from data_generator.model.entities import DataAnomaly
 
 logger = logging.getLogger('Visit')
 
@@ -25,13 +25,13 @@ def generate_ip():
 
 
 class Visit:
-    def __init__(self, visit_duration, app_version, data_anomaly):
+    def __init__(self, visit_duration_seconds, app_version, data_anomaly):
         self.app_version = app_version
         self.data_anomaly = data_anomaly
-        self._reset_fields(visit_duration)
+        self._reset_fields(visit_duration_seconds)
 
-    def is_active(self):
-        return self.generation_end_time >= int(datetime.datetime.utcnow().timestamp())
+    def is_active(self, current_time_timestamp):
+        return self.generation_end_time >= int(current_time_timestamp)
 
     def generate_new_action(self, pages_to_visit):
         logger.debug("Generating new action for visit")
@@ -41,7 +41,7 @@ class Visit:
             possible_actions = pages_to_visit[self.current_page]
 
         self.previous_page = self.current_page
-        self.current_page = get_random_from_list(possible_actions)
+        self.current_page = random.choice(list(possible_actions))
 
         return json.dumps(entities.generate_event(self))
 
@@ -56,10 +56,11 @@ class Visit:
         self.longitude = round(random.uniform(-180, 180), 4)
         self.latitude = round(random.uniform(-90, 90), 4)
         self.duration_seconds = visit_duration
+        # TODO: datetime.datetime.utcnow should be a kind of contextualized Clock to help writing the tests
         self.generation_end_time = int(datetime.datetime.utcnow().timestamp()) + visit_duration
         # random weight ==> https://stackoverflow.com/questions/14992521/python-weighted-random
         source_sites = list(map(lambda site_id: "partner{}.com".format(site_id), range(1, 10))) + ["mysite.com"] * 90
-        self.source = source_sites[random.randint(0, len(source_sites) - 1)]
+        self.source = random.choice(source_sites)
         browsers = list(map(lambda version: "Google Chrome {}".format(version), range(55, 60))) + \
                    list(map(lambda version: "Mozilla Firefox {}".format(version), range(51, 55))) + \
                    list(map(lambda version: "Microsoft Edge {}".format(version), range(14, 15)))
@@ -97,8 +98,7 @@ class Visit:
 
     def __apply_anomalies(self):
         anomaly_candidates = ['device', 'network', 'browser', 'source']
-        properties_to_change = [anomaly_candidates[get_random_from_list(anomaly_candidates)],
-                                anomaly_candidates[get_random_from_list(anomaly_candidates)]]
+        properties_to_change = random.sample(anomaly_candidates, k=2)
         if self.data_anomaly == DataAnomaly.INCOMPLETE_DATA:
             for property_to_remove in properties_to_change:
                 setattr(self, property_to_remove, None)
@@ -110,7 +110,7 @@ class Visit:
         self.device = {'name': self.device}
 
     def _change_network(self):
-        self.network = {'short_name': self.network[0:2], 'long_name': self.network}
+        self.network = {'short_name': self.network[0:1], 'long_name': self.network}
 
     def _change_browser(self):
         self.browser = {'name': self.browser, 'language': self.language}
