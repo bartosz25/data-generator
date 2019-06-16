@@ -19,3 +19,6 @@ build_image:
 
 run_image:
 	winpty docker run -ti data_generator:latest  bash
+
+test_all:
+	pytest data_generator/
