@@ -1,8 +1,8 @@
 from random import uniform, randint
 from time import sleep
 
-from api_producer import send_to_api, create_kafka_producer
-from model.dataset import Dataset
+from data_generator.api_producer import send_to_api, create_kafka_producer
+from data_generator.model.dataset import Dataset
 
 
 if __name__ == '__main__':
