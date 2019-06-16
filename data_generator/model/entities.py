@@ -1,6 +1,6 @@
 from enum import Enum
 
-from model import generators
+from data_generator.model import generators
 
 
 def generate_event(visit):

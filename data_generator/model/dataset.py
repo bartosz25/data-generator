@@ -1,9 +1,9 @@
 from datetime import timedelta
 from random import shuffle, randrange
 
-from helper.percentage import calculate_value
-from model.entities import DataAnomaly
-from visit import Visit
+from data_generator.helper.percentage import calculate_value
+from data_generator.model.entities import DataAnomaly
+from data_generator.visit import Visit
 
 
 class Dataset():
@@ -31,7 +31,7 @@ class Dataset():
         self.pages = self.create_page_map()
 
     @staticmethod
-    def crate_page_map():
+    def create_page_map():
         all_categories = list(map(lambda index: 'category {}'.format(index), range(1, 26)))
         static_pages = ['index', 'about', 'my-account']
         pages_to_visit = {}
@@ -70,7 +70,7 @@ class Dataset():
         visits = []
         for user_id in range(0, users_number):
             visit_duration = randrange(self.__duration_min, self.__duration_max)
-            visits.append(Visit(visit_duration=visit_duration, app_version=self.versions_to_distribute[user_id],
+            visits.append(Visit(visit_duration_seconds=visit_duration, app_version=self.versions_to_distribute[user_id],
                                 data_anomaly=self.data_anomalies_distribution[user_id]))
 
         return visits
