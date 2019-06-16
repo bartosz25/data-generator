@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 setup(
-    name="Data engineer course data generator",
+    name="HTTP logs web visits data generator",
     version="0.0.1",
-    description="Generates the data used in the 'Become a data engineer course'",
+    description="Generates the data simulating user visits of a website",
     author="Bartosz Konieczny",
     packages=find_packages(),
     install_requires=['docutils>=0.3', 'kafka-python>=1.4.4'],
