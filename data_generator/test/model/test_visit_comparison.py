@@ -1,8 +1,8 @@
 import json
 
-from data_generator.model.entities import DataAnomaly, generate_event
+from data_generator.model.entities import DataAnomaly
+from data_generator.model.visit import Visit
 from data_generator.test import generators_for_tests, assertions_for_test
-from data_generator.visit import Visit
 
 
 def should_generate_2_different_events_for_the_same_visit_without_anomaly():

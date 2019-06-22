@@ -1,7 +1,7 @@
 from assertpy import assert_that
 
 from data_generator.model import entities
-from data_generator.visit import Visit
+from data_generator.model.visit import Visit
 
 
 def should_generate_event_for_a_complete_visit():

@@ -3,7 +3,7 @@ from random import shuffle, randrange
 
 from data_generator.helper.percentage import calculate_value
 from data_generator.model.entities import DataAnomaly
-from data_generator.visit import Visit
+from data_generator.model.visit import Visit
 
 
 class Dataset():

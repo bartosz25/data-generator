@@ -1,10 +1,9 @@
-import time
-
 import datetime
+
 from assertpy import assert_that
 
 from data_generator.model.entities import DataAnomaly
-from data_generator.visit import Visit
+from data_generator.model.visit import Visit
 
 
 def should_create_visit_with_incomplete_data():
