@@ -3,7 +3,7 @@
 An example of generator writing data to an Apache Kafka topic. 
 
 # How to run?
-Before executing these steps, activate your virtualenv as stated in [README.md](../../README.md) under Development section.
+Before executing these steps, activate your virtualenv as stated in [README.md](../../README.md#development) under Development section.
 Execute all commands from the main directory of the project (data-generator)
 1. Start Apache Kafka and Apache Zookeeper containers: `docker-compose up`
 2. Start generation script: `python examples/kafka/generate_dataset_to_kafka.py`
