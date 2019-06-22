@@ -1,0 +1,10 @@
+kafka:
+  broker: 160.0.0.20:9092
+  topics:
+    - raw_data:
+        partitions: 1
+        replication: 1
+  producer:
+    configuration:
+      queue.buffering.max.ms: 2000 # flush buffer every 2 seconds
+      #queue.buffering.max.messages: 10 # flush every 10 messages

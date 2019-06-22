@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    networks:
+      kafka-data-generator-example-network:
+        ipv4_address: 160.0.0.10
+    ports:
+      - '2181:2181'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - 'zookeeper_data:/bitnami'
+  kafka:
+    image: 'bitnami/kafka:latest'
+    depends_on:
+      - zookeeper
+    networks:
+      kafka-data-generator-example-network:
+        ipv4_address: 160.0.0.20
+    ports:
+      - '9092:9092'
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=160.0.0.10:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://160.0.0.20:9092
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+networks:
+  kafka-data-generator-example-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 160.0.0.0/16
