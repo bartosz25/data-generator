@@ -1,8 +1,8 @@
 from assertpy import assert_that
 
 from data_generator.model.entities import DataAnomaly
-from data_generator.model.generators import generate_visit_id, generate_user_id, generate_source, generate_user_context, \
-    generate_technical_context, generate_event_time, generate_visited_page
+from data_generator.model.generators import generate_visit_id, generate_user_id, generate_source, \
+    generate_user_context, generate_technical_context, generate_event_time, generate_visited_page
 from data_generator.model.visit import Visit
 
 complete_visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING)

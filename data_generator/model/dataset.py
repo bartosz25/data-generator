@@ -21,9 +21,10 @@ class Dataset():
                                                                         app_v2=percentage_app_v2,
                                                                         app_v3=percentage_app_v3)
 
-        self.data_anomalies_distribution = self.create_data_anomalies_distribution(users_number,
-                                                                                   incomplete_data_percentage=percentage_incomplete_data,
-                                                                                   inconsistent_data_percentage=percentage_inconsistent_data)
+        self.data_anomalies_distribution = \
+            self.create_data_anomalies_distribution(users_number,
+                                                    incomplete_data_percentage=percentage_incomplete_data,
+                                                    inconsistent_data_percentage=percentage_inconsistent_data)
 
         self.visits = self.create_initial_visits(users_number)
         self.pages = self.create_page_map()
@@ -47,7 +48,8 @@ class Dataset():
         versions_to_distribute = ['v1'] * calculate_value(users_number, 20) + \
                                  ['v2'] * calculate_value(users_number, 20) + \
                                  ['v3'] * calculate_value(users_number, 60)
-        # remember - shuffle is in-place modification; see https://stackoverflow.com/questions/12765219/nonetype-object-is-not-subscriptable-trying-to-create-the-monty-hall-theory
+        # remember - shuffle is in-place modification
+        # https://stackoverflow.com/questions/12765219/nonetype-object-is-not-subscriptable-trying-to-create-the-monty-hall-theory  # noqa
         shuffle(versions_to_distribute)
         return versions_to_distribute
 
