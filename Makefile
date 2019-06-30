@@ -20,3 +20,6 @@ lint_all:
 
 reformat_all:
 	autopep8 --in-place -r data_generator
+
+test_coverage:
+	pytest --cov=data_generator data_generator/test
