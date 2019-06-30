@@ -41,7 +41,7 @@ class KafkaWriterConfiguration:
                     print("Topic {} created".format(topic))
                     topics_to_create.pop(topic, None)
                 except Exception as e:
-                    print("Topic {} was not created {} - retrying".format(topic, e)) # TODO: transform to warning
+                    print("Topic {} was not created {} - retrying".format(topic, e))  # TODO: transform to warning
                     if retry == 4:
                         creation_errors.append((topic, e))
             time.sleep(retry*5)

@@ -20,5 +20,3 @@ class DataAnomaly(Enum):
     MISSING = 1,
     INCOMPLETE_DATA = 2,
     INCONSISTENT_DATA = 3
-
-

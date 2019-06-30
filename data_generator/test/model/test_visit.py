@@ -18,8 +18,8 @@ def should_create_visit_with_incomplete_data():
 
 def should_create_visit_with_inconsistent_data():
     visit = Visit(30, 'v1', DataAnomaly.INCONSISTENT_DATA)
-    is_dict = lambda field: type(field) is dict
-    starts_with_www = lambda field: field.startswith('www.')
+    def is_dict(field): return type(field) is dict
+    def starts_with_www(field): return field.startswith('www.')
 
     inconsistenf_fields = list(filter(lambda result: result, [is_dict(visit.device), is_dict(visit.network),
                                                               is_dict(visit.browser), starts_with_www(visit.source)]))
@@ -37,4 +37,3 @@ def should_make_a_visit_inactive_after_visit_expiration():
     # wait now 3 seconds and check whether the visit becomes inactive
     timestamp_3_secs_later = now + 3
     assert_that(visit.is_active(timestamp_3_secs_later)).is_false()
-

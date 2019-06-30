@@ -62,8 +62,8 @@ class Visit:
         source_sites = list(map(lambda site_id: "partner{}.com".format(site_id), range(1, 10))) + ["mysite.com"] * 90
         self.source = random.choice(source_sites)
         browsers = list(map(lambda version: "Google Chrome {}".format(version), range(55, 60))) + \
-                   list(map(lambda version: "Mozilla Firefox {}".format(version), range(51, 55))) + \
-                   list(map(lambda version: "Microsoft Edge {}".format(version), range(14, 15)))
+            list(map(lambda version: "Mozilla Firefox {}".format(version), range(51, 55))) + \
+            list(map(lambda version: "Microsoft Edge {}".format(version), range(14, 15)))
         self.browser = browsers[get_random_from_list(browsers)]
         languages = ["fr", "pl", "de"] + ["en"] * 20
         self.language = languages[get_random_from_list(languages)]

@@ -46,7 +46,8 @@ def should_generate_valid_technical_context():
     assert_that(technical_context['browser']).is_equal_to(complete_visit.browser)
     assert_that(technical_context['os']).is_equal_to(complete_visit.os)
     assert_that(technical_context['lang']).is_equal_to(complete_visit.language)
-    assert_that(technical_context['device']).is_equal_to({'type': complete_visit.device, 'version': complete_visit.device_version})
+    assert_that(technical_context['device']).is_equal_to(
+        {'type': complete_visit.device, 'version': complete_visit.device_version})
     assert_that(technical_context['network']).is_equal_to(complete_visit.network)
 
 

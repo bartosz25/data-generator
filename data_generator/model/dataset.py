@@ -7,7 +7,6 @@ from data_generator.model.visit import Visit
 
 
 class Dataset():
-
     def __init__(self,
                  duration_min_seconds, duration_max_minutes,
                  percentage_incomplete_data, percentage_inconsistent_data,
@@ -22,10 +21,9 @@ class Dataset():
                                                                         app_v2=percentage_app_v2,
                                                                         app_v3=percentage_app_v3)
 
-        self.data_anomalies_distribution = \
-            self.create_data_anomalies_distribution(users_number,
-                                                    incomplete_data_percentage=percentage_incomplete_data,
-                                                    inconsistent_data_percentage=percentage_inconsistent_data)
+        self.data_anomalies_distribution = self.create_data_anomalies_distribution(users_number,
+                                                                                   incomplete_data_percentage=percentage_incomplete_data,
+                                                                                   inconsistent_data_percentage=percentage_inconsistent_data)
 
         self.visits = self.create_initial_visits(users_number)
         self.pages = self.create_page_map()
@@ -59,10 +57,10 @@ class Dataset():
         data_with_anomaly_percentage = incomplete_data_percentage + inconsistent_data_percentage
         data_anomalies_distribution = [DataAnomaly.MISSING] * calculate_value(users_number,
                                                                               100 - data_with_anomaly_percentage) + \
-                                      [DataAnomaly.INCOMPLETE_DATA] * calculate_value(users_number,
-                                                                                      incomplete_data_percentage) + \
-                                      [DataAnomaly.INCONSISTENT_DATA] * calculate_value(users_number,
-                                                                                        inconsistent_data_percentage)
+            [DataAnomaly.INCOMPLETE_DATA] * calculate_value(users_number,
+                                                            incomplete_data_percentage) + \
+            [DataAnomaly.INCONSISTENT_DATA] * calculate_value(users_number,
+                                                              inconsistent_data_percentage)
         shuffle(data_anomalies_distribution)
         return data_anomalies_distribution
 
