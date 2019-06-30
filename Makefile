@@ -14,3 +14,6 @@ run_image:
 
 test_all:
 	pytest data_generator/
+
+lint_all:
+	flake8 data_generator/
