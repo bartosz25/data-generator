@@ -17,3 +17,6 @@ test_all:
 
 lint_all:
 	flake8 data_generator/
+
+reformat_all:
+	autopep8 --in-place -r data_generator
