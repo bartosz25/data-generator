@@ -1,11 +1,10 @@
 import datetime
+import ipaddress
 import json
 import logging
-import uuid
 import random
-import ipaddress
+import uuid
 
-from data_generator.helper.numbers import get_random_from_list
 from data_generator.model import entities
 from data_generator.model.entities import DataAnomaly
 
@@ -64,19 +63,19 @@ class Visit:
         browsers = list(map(lambda version: "Google Chrome {}".format(version), range(55, 60))) + \
             list(map(lambda version: "Mozilla Firefox {}".format(version), range(51, 55))) + \
             list(map(lambda version: "Microsoft Edge {}".format(version), range(14, 15)))
-        self.browser = browsers[get_random_from_list(browsers)]
+        self.browser = random.choice(browsers)
         languages = ["fr", "pl", "de"] + ["en"] * 20
-        self.language = languages[get_random_from_list(languages)]
+        self.language = random.choice(languages)
         devices = ["pc", "tablet", "smartphone"]
-        self.device = devices[get_random_from_list(devices)]
+        self.device = random.choice(devices)
         networks = ["adsl", "fiber_optic", "3g", "4g"]
-        self.network = networks[get_random_from_list(networks)]
+        self.network = random.choice(networks)
 
         operating_systems = {"pc": ["Ubuntu 16", "Ubuntu 18", "Windows 8", "Windows 10", "macOS 10.12", "macOS 10.13",
                                     "macOS 10.14"],
                              "tablet": ["Android 8.1", "Android 9.0", "iOS 9", "iOS 10", "iOS 11", "iOS 12"],
                              "smartphone": ["Android 8.1", "Android 9.0", "iOS 9", "iOS 10", "iOS 11", "iOS 12"]}
-        self.os = operating_systems[self.device][get_random_from_list(operating_systems[self.device])]
+        self.os = random.choice(operating_systems[self.device])
         device_versions = {"tablet": {
             "android": ["Samsung Galaxy Tab S4", "Samsung Galaxy Tab S3"],
             "ios": ["iPad Pro 11", "iPad Pro 12.9", "iPad mini 4", "iPad Pro 10.5"]
@@ -89,7 +88,7 @@ class Visit:
         if self.device != "pc":
             os_type = self.os.split(" ")[0].lower()
             eligible_versions = device_versions[self.device][os_type]
-            self.device_version = eligible_versions[get_random_from_list(eligible_versions)]
+            self.device_version = random.choice(eligible_versions)
 
         self.current_page = None
         self.previous_page = None
