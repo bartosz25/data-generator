@@ -45,9 +45,9 @@ class Dataset():
 
     @staticmethod
     def create_versions_distribution(users_number, app_v1, app_v2, app_v3):
-        versions_to_distribute = ['v1'] * calculate_value(users_number, 20) + \
-                                 ['v2'] * calculate_value(users_number, 20) + \
-                                 ['v3'] * calculate_value(users_number, 60)
+        versions_to_distribute = ['v1'] * calculate_value(users_number, app_v1) + \
+                                 ['v2'] * calculate_value(users_number, app_v2) + \
+                                 ['v3'] * calculate_value(users_number, app_v3)
         # remember - shuffle is in-place modification
         # https://stackoverflow.com/questions/12765219/nonetype-object-is-not-subscriptable-trying-to-create-the-monty-hall-theory  # noqa
         shuffle(versions_to_distribute)

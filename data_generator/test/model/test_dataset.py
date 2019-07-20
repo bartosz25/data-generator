@@ -33,3 +33,15 @@ def should_generate_pages_map():
 
     for page_name, linked_pages in expected_map.items():
         assert_that(page_map[page_name]).contains_sequence(*linked_pages)
+
+
+def should_create_correct_apps_distribution():
+    versions_distribution = Dataset.create_versions_distribution(50, 10, 10, 80)
+
+    versions_count = {'v1': 0, 'v2': 0, 'v3': 0}
+    for version in versions_distribution:
+        versions_count[version] += 1
+
+    assert_that(versions_count['v1']).is_equal_to(5)
+    assert_that(versions_count['v2']).is_equal_to(5)
+    assert_that(versions_count['v3']).is_equal_to(40)
