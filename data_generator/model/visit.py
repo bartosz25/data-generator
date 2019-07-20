@@ -25,6 +25,15 @@ def generate_ip():
 
 class Visit:
     def __init__(self, visit_duration_seconds, app_version, data_anomaly):
+        """
+        Entity class representing one user's visit on the website. In order to keep dataset distribution consistent
+        after the visit's expiration, this class should be reused.Every time a visit expires, it should be reinitialized
+        through :funct:`~data_generator.model.visit.Visit.reinitialize_visit`
+
+        :param visit_duration_seconds:
+        :param app_version: Version of the application associated to the visit.
+        :param data_anomaly: The anomaly that will be applied on this visit.
+        """
         self.app_version = app_version
         self.data_anomaly = data_anomaly
         self._reset_fields(visit_duration_seconds)
