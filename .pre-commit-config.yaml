@@ -5,10 +5,8 @@ repos:
       name: Check code format
       entry: make lint_all
       language: system
-- repo: local
-  hooks:
-  - id: tests
-    name: Execute unit tests
-    entry: make test_all
-    language: system
-    stages: [push]
+    - id: tests
+      name: Execute unit tests
+      entry: make test_all
+      language: system
+      stages: [push]
