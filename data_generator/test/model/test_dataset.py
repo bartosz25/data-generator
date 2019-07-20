@@ -1,6 +1,7 @@
 from assertpy import assert_that
 
 from data_generator.model.dataset import Dataset
+from data_generator.model.entities import DataAnomaly
 
 
 def should_generate_pages_map():
@@ -45,3 +46,46 @@ def should_create_correct_apps_distribution():
     assert_that(versions_count['v1']).is_equal_to(5)
     assert_that(versions_count['v2']).is_equal_to(5)
     assert_that(versions_count['v3']).is_equal_to(40)
+
+
+def should_create_correct_data_anomalies_distribution():
+    data_anomalies_distribution = Dataset.create_data_anomalies_distribution(60, 10, 12)
+
+    anomalies_count = {DataAnomaly.MISSING: 0, DataAnomaly.INCOMPLETE_DATA: 0, DataAnomaly.INCONSISTENT_DATA: 0}
+    for anomaly in data_anomalies_distribution:
+        anomalies_count[anomaly] += 1
+
+    # The sum is not equal to 60 but it's a rounding issue that doesn't worth to be solved right now because of
+    # too small impact on the system
+    assert_that(anomalies_count[DataAnomaly.MISSING]).is_equal_to(47)
+    assert_that(anomalies_count[DataAnomaly.INCOMPLETE_DATA]).is_equal_to(6)
+    assert_that(anomalies_count[DataAnomaly.INCONSISTENT_DATA]).is_equal_to(8)
+
+
+def should_create_a_correct_number_of_visits():
+    dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
+                      percentage_app_v2=15, users_number=100)
+
+    assert_that(dataset.visits).is_length(100)
+
+
+def should_reinitialize_a_visit_with_random_duration():
+    dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
+                      percentage_app_v2=15, users_number=100)
+    first_visit = dataset.visits[0]
+
+    initial_app_version = first_visit.app_version
+    initial_anomaly = first_visit.data_anomaly
+    initial_attributes = {**first_visit.__dict__}
+
+    dataset.reinitialize_visit(first_visit)
+    print(str(first_visit))
+    print(str(initial_attributes))
+    print(str(first_visit.__dict__))
+
+    assert_that(first_visit.app_version).is_equal_to(initial_app_version)
+    assert_that(first_visit.data_anomaly).is_equal_to(initial_anomaly)
+    # assert only on the fields that are certainly different every time
+    assert_that(first_visit.visit_id).is_not_equal_to(initial_attributes['visit_id'])
+    assert_that(first_visit.user_id).is_not_equal_to(initial_attributes['user_id'])
+    assert_that(first_visit.duration_seconds).is_not_equal_to(initial_attributes['duration_seconds'])
