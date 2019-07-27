@@ -1,4 +1,3 @@
-import datetime
 import ipaddress
 import json
 import logging
@@ -24,7 +23,7 @@ def generate_ip():
 
 
 class Visit:
-    def __init__(self, visit_duration_seconds, app_version, data_anomaly):
+    def __init__(self, visit_duration_seconds, app_version, data_anomaly, timer):
         """
         Entity class representing one user's visit on the website. In order to keep dataset distribution consistent
         after the visit's expiration, this class should be reused.Every time a visit expires, it should be reinitialized
@@ -36,13 +35,16 @@ class Visit:
         """
         self.app_version = app_version
         self.data_anomaly = data_anomaly
+        self.timer = timer
         self._reset_fields(visit_duration_seconds)
 
-    def is_active(self, current_time_timestamp):
-        return self.generation_end_time >= int(current_time_timestamp)
+    def event_time(self):
+        return self.next_action_time
 
-    def generate_new_action(self, pages_to_visit):
-        logger.debug("Generating new action for visit")
+    def get_remaining_session_time_in_sec(self):
+        return self.generation_end_time - self.last_action
+
+    def generate_new_action(self, pages_to_visit, duration):
         if not self.current_page:
             possible_actions = pages_to_visit.keys()
         else:
@@ -51,21 +53,35 @@ class Visit:
         self.previous_page = self.current_page
         self.current_page = random.choice(list(possible_actions))
 
-        return json.dumps(entities.generate_event(self))
+        json_data = json.dumps(entities.generate_event(self))
+
+        new_next_action_time = self.next_action_time + duration
+        if new_next_action_time > self.generation_end_time:
+            self.next_action_time = self.generation_end_time
+            self.is_to_close = True
+        else:
+            self.next_action_time = new_next_action_time
+            self.is_to_close = False
+
+        return json_data
 
     def reinitialize_visit(self, new_duration):
         self._reset_fields(new_duration)
         return self
 
+    def output_log_to_the_sink(self):
+        return not self.is_to_close and self.next_action_time < self.timer.current_time()
+
     def _reset_fields(self, visit_duration):
+        self.is_to_close = False
+        self.next_action_time = self.timer.current_time()
         self.visit_id = uuid.uuid4().hex
         self.user_id = random.randint(1, 1000000)
         self.ip = generate_ip()
         self.longitude = round(random.uniform(-180, 180), 4)
         self.latitude = round(random.uniform(-90, 90), 4)
         self.duration_seconds = visit_duration
-        # TODO: datetime.datetime.utcnow should be a kind of contextualized Clock to help writing the tests
-        self.generation_end_time = int(datetime.datetime.utcnow().timestamp()) + visit_duration
+        self.generation_end_time = self.timer.current_time() + visit_duration
         # random weight ==> https://stackoverflow.com/questions/14992521/python-weighted-random
         source_sites = list(map(lambda site_id: "partner{}.com".format(site_id), range(1, 10))) + ["mysite.com"] * 90
         self.source = random.choice(source_sites)

@@ -3,9 +3,11 @@ from assertpy import assert_that
 from data_generator.model.entities import DataAnomaly
 from data_generator.model.generators import generate_visit_id, generate_user_id, generate_source, \
     generate_user_context, generate_technical_context, generate_event_time, generate_visited_page
+from data_generator.model.timer import Timer
 from data_generator.model.visit import Visit
 
-complete_visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING)
+complete_visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING,
+                       timer=Timer(-900))
 
 
 def should_generate_consistent_id_between_2_calls():
@@ -54,7 +56,7 @@ def should_generate_valid_technical_context():
 def should_generate_valid_event_time():
     event_time = generate_event_time(complete_visit)
 
-    assert_that(event_time).matches(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}\+0000')
+    assert_that(event_time).matches(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00')
 
 
 def should_generate_visited_page():

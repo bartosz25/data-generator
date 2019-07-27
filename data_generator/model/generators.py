@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+import datetime
 
 
 def generate_visit_id(visit):
@@ -40,4 +40,4 @@ def generate_technical_context(visit):
 
 
 def generate_event_time(visit):
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+    return datetime.datetime.fromtimestamp(visit.event_time(), tz=datetime.timezone.utc).isoformat()

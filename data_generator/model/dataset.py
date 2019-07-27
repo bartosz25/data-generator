@@ -11,9 +11,10 @@ class Dataset():
                  duration_min_seconds, duration_max_minutes,
                  percentage_incomplete_data, percentage_inconsistent_data,
                  percentage_app_v1, percentage_app_v2,
-                 users_number):
+                 users_number, timer):
         self.__duration_min = timedelta(seconds=duration_min_seconds).total_seconds()
         self.__duration_max = timedelta(minutes=duration_max_minutes).total_seconds()
+        self.timer = timer
 
         percentage_app_v3 = (100 - percentage_app_v1 - percentage_app_v2)
         self.versions_to_distribute = self.create_versions_distribution(users_number,
@@ -71,7 +72,7 @@ class Dataset():
         for user_id in range(0, users_number):
             visit_duration = randrange(self.__duration_min, self.__duration_max)
             visits.append(Visit(visit_duration_seconds=visit_duration, app_version=self.versions_to_distribute[user_id],
-                                data_anomaly=self.data_anomalies_distribution[user_id]))
+                                data_anomaly=self.data_anomalies_distribution[user_id], timer=self.timer))
 
         return visits
 

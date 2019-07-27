@@ -1,4 +1,4 @@
-from random import uniform, randint
+from random import uniform, randint, random
 from time import sleep
 
 import datetime
@@ -6,6 +6,9 @@ import datetime
 # If you have any better idea how to achieve that, please comment
 import sys
 import os
+
+from data_generator.model.timer import Timer
+
 sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
 
 from data_generator.model.dataset import Dataset
@@ -15,11 +18,13 @@ if __name__ == '__main__':
     dataset = Dataset(duration_min_seconds=10, duration_max_minutes=30,
                       percentage_incomplete_data=2, percentage_inconsistent_data=2,
                       percentage_app_v1=20, percentage_app_v2=20,
-                      users_number=10
+                      users_number=10, timer=Timer(latency_seconds=-900)
                       )
 
     def should_send_message():
-        return randint(0, 1)
+        # work on weighted randomness because we want to simulate when somebody stays on the page better
+        flags = [0] * 10 + [1] * 90
+        return random.choice(flags)
 
     output_topic_name = 'raw_data'
     configuration = KafkaWriterConfiguration({
@@ -35,17 +40,16 @@ if __name__ == '__main__':
     })
     configuration.create_or_recreate_topics()
 
+
+    def get_random_duration_in_seconds():
+        return random.randint(1, 10)
+
     while True:
-        now = int(datetime.datetime.utcnow().timestamp())
         for index, visit in enumerate(dataset.visits):
-            if visit.is_active(now):
-                action = visit.generate_new_action(dataset.pages)
-                # We don't send the message every time. The visit can be shorter or longer, and this
-                # flip of a coin helps to simulate longer visit.
-                if should_send_message():
-                    # sleep a random time to better simulate the real-world behavior
-                    sleep(uniform(0.0, 1.3))
-                    configuration.send_message(output_topic_name, action)
-            else:
+            if visit.output_log_to_the_sink():
+                action = visit.generate_new_action(dataset.pages, get_random_duration_in_seconds())
+                configuration.send_message(output_topic_name, action)
+                print(f'Sending {action}')
+            elif visit.is_to_close:
                 print('Terminating {}'.format(visit))
                 dataset.reinitialize_visit(visit)

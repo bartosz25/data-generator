@@ -2,6 +2,7 @@ from assertpy import assert_that
 
 from data_generator.model.dataset import Dataset
 from data_generator.model.entities import DataAnomaly
+from data_generator.model.timer import Timer
 
 
 def should_generate_pages_map():
@@ -64,14 +65,14 @@ def should_create_correct_data_anomalies_distribution():
 
 def should_create_a_correct_number_of_visits():
     dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
-                      percentage_app_v2=15, users_number=100)
+                      percentage_app_v2=15, users_number=100, timer=Timer(-900))
 
     assert_that(dataset.visits).is_length(100)
 
 
 def should_reinitialize_a_visit_with_random_duration():
     dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
-                      percentage_app_v2=15, users_number=100)
+                      percentage_app_v2=15, users_number=100, timer=Timer(-900))
     first_visit = dataset.visits[0]
 
     initial_app_version = first_visit.app_version
