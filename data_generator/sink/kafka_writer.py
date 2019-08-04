@@ -56,8 +56,21 @@ class KafkaWriterConfiguration:
             producer_config = {'bootstrap.servers': self.broker}
             producer_config.update(self.producer_configuration)
             self.producer = Producer(producer_config)
-
-        self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
+        """
+        Traceback (most recent call last):
+        File "/home/bartosz/workspace/data-generator/examples/kafka/generate_dataset_to_kafka.py", line 51, in <module>
+            configuration.send_message(output_topic_name, action)
+        File "/home/bartosz/workspace/data-generator/data_generator/sink/kafka_writer.py", line 60, in send_message
+            self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
+        BufferError: Local: Queue full
+        The below code is the workaround for the above problem, found here:
+        `Confluent Kafka-Python issue 104 <https://github.com/confluentinc/confluent-kafka-python/issues/104>`
+        """
+        try:
+            self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
+        except BufferError:
+            self.producer.flush()
+            self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
 
     def __repr__(self):
         return 'KafkaWriterConfiguration (broker={}) (topics={})'.format(self.broker, self.topics)
