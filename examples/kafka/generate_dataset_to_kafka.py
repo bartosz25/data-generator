@@ -1,12 +1,10 @@
-from random import uniform, randint, random
-from time import sleep
-
-import datetime
+import os
 # Hack to be able to execute data-generator script without needing to compile it
 # If you have any better idea how to achieve that, please comment
 import sys
-import os
+from random import randint, choice
 
+from data_generator.model.unordered_data import UnorderedDataContainer
 from data_generator.model.timer import Timer
 
 sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
@@ -21,10 +19,13 @@ if __name__ == '__main__':
                       users_number=10, timer=Timer(latency_seconds=-900)
                       )
 
-    def should_send_message():
-        # work on weighted randomness because we want to simulate when somebody stays on the page better
-        flags = [0] * 10 + [1] * 90
-        return random.choice(flags)
+    unordered_data_container = UnorderedDataContainer(lambda: choice([0] * 90 + [1] * 10))
+
+
+    def should_send_unordered_actions():
+        flags = [0] * 90 + [1] * 10
+        return choice(flags)
+
 
     output_topic_name = 'raw_data'
     configuration = KafkaWriterConfiguration({
@@ -42,14 +43,22 @@ if __name__ == '__main__':
 
 
     def get_random_duration_in_seconds():
-        return random.randint(1, 10)
+        return randint(1, 10)
+
 
     while True:
         for index, visit in enumerate(dataset.visits):
             if visit.output_log_to_the_sink():
                 action = visit.generate_new_action(dataset.pages, get_random_duration_in_seconds())
-                configuration.send_message(output_topic_name, action)
-                print(f'Sending {action}')
+                unordered_data_container.wrap_action(action,
+                                                     lambda generated_action: configuration.send_message(
+                                                         output_topic_name,
+                                                         generated_action
+                                                     ))
             elif visit.is_to_close:
-                print('Terminating {}'.format(visit))
                 dataset.reinitialize_visit(visit)
+
+            if should_send_unordered_actions():
+                unordered_data_container.send_buffered_actions(
+                    lambda late_action: configuration.send_message(output_topic_name,
+                                                                   late_action))
