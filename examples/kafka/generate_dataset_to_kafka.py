@@ -4,11 +4,11 @@ import os
 import sys
 from random import randint, choice
 
-from data_generator.model.unordered_data import UnorderedDataContainer
-from data_generator.model.timer import Timer
 
 sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
 
+from data_generator.model.unordered_data import UnorderedDataContainer
+from data_generator.model.timer import Timer
 from data_generator.model.dataset import Dataset
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
