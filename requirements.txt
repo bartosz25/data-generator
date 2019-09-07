@@ -5,3 +5,4 @@ confluent-kafka==0.11.6
 flake8
 autopep8
 pytest-cov
+boto3
