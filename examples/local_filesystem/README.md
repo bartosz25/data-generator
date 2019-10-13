@@ -19,4 +19,5 @@ be written into `/tmp/sessions/input`. You can configure all these properties in
 `120` and `10` - the generator will generate activities for the time range between 2 and 10 minutes, so it will
 generate the data for the next partition sooner
 - `get_random_duration_in_seconds` method and for instance set the range to `random.randint(60, 180)`
-
+2. To generate dataset across different partitions, you can also change the timer's timeshifting to fit into
+40th or 50th minute of the hour.
