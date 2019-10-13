@@ -10,6 +10,14 @@ logger = logging.getLogger('LocalFileSystemConfiguration')
 
 class LocalFileSystemConfiguration:
     def __init__(self, partition_getter, max_in_partition, base_dir, inactivity_delay):
+        """
+        :param partition_getter: A function used to extract the partition location from the input log
+        :param max_in_partition: Maximal number of buffered events for a partition.
+        If this value is reached, all buffered events are materialized in the file.
+        :param base_dir: The directory where the partitions will be created.
+        :param inactivity_delay: Idleness period defining how long the data can be buffered before
+        materializing it inside a file.
+        """
         self.partition_getter = partition_getter
         self.data_per_partition = defaultdict(lambda: [])
         self.timeout_per_partition = {}
@@ -50,6 +58,7 @@ class LocalFileSystemConfiguration:
         output_file = open(file_path, 'w+')
         for json_line in self.data_per_partition[partition_key]:
             output_file.write(json_line)
+            output_file.write('\n')
         output_file.close()
         logger.info('Written logs to {}'.format(file_path))
         self.data_per_partition[partition_key] = []

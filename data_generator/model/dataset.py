@@ -12,6 +12,17 @@ class Dataset():
                  percentage_incomplete_data, percentage_inconsistent_data,
                  percentage_app_v1, percentage_app_v2,
                  users_number, timer):
+        """
+
+        :param duration_min_seconds: The min duration of the generated visits
+        :param duration_max_minutes: The max duration of the generated visits
+        :param percentage_incomplete_data:
+        :param percentage_inconsistent_data:
+        :param percentage_app_v1:
+        :param percentage_app_v2:
+        :param users_number: The number of all users to generate in the dataset
+        :param timer: `~data_generator.model.timer.Timer` implementation to use
+        """
         self.__duration_min = timedelta(seconds=duration_min_seconds).total_seconds()
         self.__duration_max = timedelta(minutes=duration_max_minutes).total_seconds()
         self.timer = timer
