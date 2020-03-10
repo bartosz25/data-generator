@@ -20,7 +20,7 @@ if __name__ == '__main__':
     dataset = Dataset.from_yaml(configuration)
     unordered_data_container = UnorderedDataContainer.from_yaml_with_random_distribution(configuration)
 
-    def should_send_unordered_actions():
+    def should_send_late_data_to_kafka():
         flags = [0] * 90 + [1] * 10
         return choice(flags)
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
             elif visit.is_to_close:
                 dataset.reinitialize_visit(visit)
 
-            if should_send_unordered_actions():
+            if should_send_late_data_to_kafka():
                 unordered_data_container.send_buffered_actions(
                     lambda late_action: configuration.send_message(output_topic_name,
                                                                    late_action[0], late_action[1]))
