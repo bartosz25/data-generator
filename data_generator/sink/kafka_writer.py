@@ -1,7 +1,11 @@
 import time
 
+import logging
 from confluent_kafka.admin import AdminClient
 from confluent_kafka.cimpl import Producer, NewTopic
+
+
+logger = logging.getLogger(__name__)
 
 
 class KafkaWriterConfiguration:
@@ -66,13 +70,17 @@ class KafkaWriterConfiguration:
         The below code is the workaround for the above problem, found here:
         `Confluent Kafka-Python issue 104 <https://github.com/confluentinc/confluent-kafka-python/issues/104>`
         """
+        def delivery_callback(error, result):
+            if error:
+                logger.error("Record was not correctly delivered: %s", error)
         try:
             self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
-                                  value=bytes(message, encoding='utf-8'))
+                                  value=bytes(message, encoding='utf-8'),
+                                  on_delivery=delivery_callback)
         except BufferError:
             self.producer.flush()
             self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
-                                  value=bytes(message, encoding='utf-8'))
+                                  value=bytes(message, encoding='utf-8'), on_delivery=delivery_callback)
 
     def __repr__(self):
         return 'KafkaWriterConfiguration (broker={}) (topics={})'.format(self.broker, self.topics)
