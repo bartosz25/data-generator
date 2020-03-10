@@ -50,7 +50,7 @@ class KafkaWriterConfiguration:
             list(map(lambda topic_and_error: "{}: {}".format(topic_and_error[0], topic_and_error[1]), creation_errors))
         )
 
-    def send_message(self, topic_name, message):
+    def send_message(self, topic_name, key, message):
         if not self.producer:
             # check https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md for more information
             producer_config = {'bootstrap.servers': self.broker}
@@ -67,10 +67,12 @@ class KafkaWriterConfiguration:
         `Confluent Kafka-Python issue 104 <https://github.com/confluentinc/confluent-kafka-python/issues/104>`
         """
         try:
-            self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
+            self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
+                                  value=bytes(message, encoding='utf-8'))
         except BufferError:
             self.producer.flush()
-            self.producer.produce(topic_name, value=bytes(message, encoding='utf-8'))
+            self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
+                                  value=bytes(message, encoding='utf-8'))
 
     def __repr__(self):
         return 'KafkaWriterConfiguration (broker={}) (topics={})'.format(self.broker, self.topics)
