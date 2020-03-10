@@ -1,3 +1,7 @@
+import pathlib
+from collections import Counter
+
+import yaml
 from assertpy import assert_that
 
 from data_generator.model.dataset import Dataset
@@ -90,3 +94,21 @@ def should_reinitialize_a_visit_with_random_duration():
     assert_that(first_visit.visit_id).is_not_equal_to(initial_attributes['visit_id'])
     assert_that(first_visit.user_id).is_not_equal_to(initial_attributes['user_id'])
     assert_that(first_visit.duration_seconds).is_not_equal_to(initial_attributes['duration_seconds'])
+
+
+def should_create_dataset_from_yaml_configuration():
+    path = pathlib.Path(__file__).parent.absolute()
+    with open('{}/dataset_configuration.yaml'.format(path)) as file:
+        configuration = yaml.load(file, Loader=yaml.FullLoader)
+
+    dataset = Dataset.from_yaml(configuration)
+
+    counted_versions = Counter(dataset.versions_to_distribute)
+    assert_that(counted_versions['v1']).is_equal_to(200)
+    assert_that(counted_versions['v2']).is_equal_to(200)
+    assert_that(counted_versions['v3']).is_equal_to(600)
+    assert_that(dataset.timer.latency_seconds).is_equal_to(-900)
+    data_quality_issues = Counter(dataset.data_anomalies_distribution)
+    assert_that(data_quality_issues[DataAnomaly.MISSING]).is_equal_to(960)
+    assert_that(data_quality_issues[DataAnomaly.INCOMPLETE_DATA]).is_equal_to(20)
+    assert_that(data_quality_issues[DataAnomaly.INCONSISTENT_DATA]).is_equal_to(20)

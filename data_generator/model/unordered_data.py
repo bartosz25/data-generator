@@ -1,7 +1,11 @@
+from random import choice
+
+
 class UnorderedDataContainer:
     """
     :param must_buffer_data: A function that should return True if the verified action should be buffered.
     """
+
     def __init__(self, must_buffer_data):
         self.__buffered_actions = []
         self.__must_buffer_data = must_buffer_data
@@ -23,3 +27,9 @@ class UnorderedDataContainer:
     @property
     def all_buffered_actions(self):
         return self.__buffered_actions
+
+    @staticmethod
+    def from_yaml_with_random_distribution(configuration):
+        late_data = configuration['generation']['late_data_percentage']
+        on_time_data = 100 - late_data
+        return UnorderedDataContainer(lambda: choice([0] * on_time_data + [1] * late_data))

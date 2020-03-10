@@ -3,6 +3,7 @@ from random import shuffle, randrange
 
 from data_generator.helper.percentage import calculate_value
 from data_generator.model.entities import DataAnomaly
+from data_generator.model.timer import Timer
 from data_generator.model.visit import Visit
 
 
@@ -89,3 +90,20 @@ class Dataset():
 
     def reinitialize_visit(self, visit):
         visit.reinitialize_visit(new_duration=randrange(self.__duration_min, self.__duration_max))
+
+    @staticmethod
+    def from_yaml(configuration):
+        dataset_configuration = configuration['dataset']
+        versions_configuration = dataset_configuration['versions_percentage']
+        duration_interval_configuration = dataset_configuration['session_duration_seconds']
+        composition_configuration = dataset_configuration['composition_percentage']
+        return Dataset(
+            duration_min_seconds=duration_interval_configuration['min'],
+            duration_max_minutes=duration_interval_configuration['max'],
+            percentage_incomplete_data=composition_configuration['incomplete'],
+            percentage_inconsistent_data=composition_configuration['inconsistent'],
+            percentage_app_v1=versions_configuration['v1'],
+            percentage_app_v2=versions_configuration['v2'],
+            users_number=dataset_configuration['all_users'],
+            timer=Timer(latency_seconds=dataset_configuration['real_time_delta_seconds'])
+        )
