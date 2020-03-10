@@ -6,6 +6,7 @@ class Timer:
     Timer idea is to facilitate latency simulation. For now it's an object shared by all the visits but if needed,
     it can be also parametrized at visit's level.
     """
+
     def __init__(self, latency_seconds):
         self.latency_seconds = latency_seconds
 

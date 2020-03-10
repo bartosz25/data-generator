@@ -1,0 +1,15 @@
+generation:
+  late_data_percentage: 10
+dataset:
+  all_users: 1000
+  real_time_delta_seconds: -900
+  session_duration_seconds:
+    min: 10
+    max: 30
+  composition_percentage:
+    incomplete: 2
+    inconsistent: 2
+    fully_valid: 96
+  versions_percentage:
+    v1: 20
+    v2: 20
