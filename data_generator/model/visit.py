@@ -46,7 +46,7 @@ class Visit:
     def get_remaining_session_time_in_sec(self):
         return self.generation_end_time - self.last_action
 
-    def generate_new_action(self, pages_to_visit, duration):
+    def generate_new_action(self, pages_to_visit, duration, is_valid_log=True):
         if not self.current_page:
             possible_actions = pages_to_visit.keys()
         else:
@@ -55,7 +55,7 @@ class Visit:
         self.previous_page = self.current_page
         self.current_page = random.choice(list(possible_actions))
 
-        json_data = json.dumps(entities.generate_event(self))
+        json_data = json.dumps(entities.generate_event(self, is_valid_log))
 
         new_next_action_time = self.next_action_time + duration
         if new_next_action_time > self.generation_end_time:

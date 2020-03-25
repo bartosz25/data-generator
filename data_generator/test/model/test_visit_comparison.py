@@ -59,3 +59,13 @@ def should_generate_the_next_action_closing_the_visit():
     json.loads(visit.generate_new_action(test_pages, 130))
 
     assert_that(visit.is_to_close).is_true()
+
+
+def should_generate_invalid_log():
+    test_pages = generators_for_tests.generate_pages_map()
+    visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING,
+                  timer=Timer(-900), keep_private=False)
+
+    invalid_visit_log = json.loads(visit.generate_new_action(test_pages, 30, False))
+
+    assert_that(invalid_visit_log['visit_id']).is_none()

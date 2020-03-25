@@ -3,9 +3,10 @@ from enum import Enum
 from data_generator.model import generators
 
 
-def generate_event(visit):
+def generate_event(visit, is_valid_log=True):
+    visit_id = None if not is_valid_log else generators.generate_visit_id(visit)
     event_dict = {
-        "visit_id": generators.generate_visit_id(visit),
+        "visit_id": visit_id,
         "event_time": generators.generate_event_time(visit),
         "user_id": generators.generate_user_id(visit),
         "page": generators.generate_visited_page(visit),
