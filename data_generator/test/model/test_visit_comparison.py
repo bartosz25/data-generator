@@ -11,7 +11,7 @@ from data_generator.test import generators_for_tests, assertions_for_test
 def should_generate_2_different_events_for_the_same_visit_without_anomaly():
     test_pages = generators_for_tests.generate_pages_map()
     visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING,
-                  timer=Timer(-900))
+                  timer=Timer(-900), keep_private=False)
 
     action_1 = json.loads(visit.generate_new_action(test_pages, 30))
     action_2 = json.loads(visit.generate_new_action(test_pages, 10))
@@ -22,7 +22,7 @@ def should_generate_2_different_events_for_the_same_visit_without_anomaly():
 def should_generate_2_different_events_for_the_same_visit_with_incomplete_data_anomaly():
     test_pages = generators_for_tests.generate_pages_map()
     visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.INCOMPLETE_DATA,
-                  timer=Timer(-900))
+                  timer=Timer(-900), keep_private=False)
 
     action_1 = json.loads(visit.generate_new_action(test_pages, 20))
     action_2 = json.loads(visit.generate_new_action(test_pages, 10))
@@ -33,7 +33,7 @@ def should_generate_2_different_events_for_the_same_visit_with_incomplete_data_a
 def should_generate_2_different_events_for_the_same_visit_with_inconsistent_data_anomaly():
     test_pages = generators_for_tests.generate_pages_map()
     visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.INCONSISTENT_DATA,
-                  timer=Timer(-900))
+                  timer=Timer(-900), keep_private=False)
 
     action_1 = json.loads(visit.generate_new_action(test_pages, 10))
     action_2 = json.loads(visit.generate_new_action(test_pages, 20))
@@ -44,7 +44,7 @@ def should_generate_2_different_events_for_the_same_visit_with_inconsistent_data
 def should_generate_the_next_action_not_closing_the_visit():
     test_pages = generators_for_tests.generate_pages_map()
     visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.INCONSISTENT_DATA,
-                  timer=Timer(-900))
+                  timer=Timer(-900), keep_private=False)
 
     json.loads(visit.generate_new_action(test_pages, 110))
 
@@ -54,7 +54,7 @@ def should_generate_the_next_action_not_closing_the_visit():
 def should_generate_the_next_action_closing_the_visit():
     test_pages = generators_for_tests.generate_pages_map()
     visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.INCONSISTENT_DATA,
-                  timer=Timer(-900))
+                  timer=Timer(-900), keep_private=False)
 
     json.loads(visit.generate_new_action(test_pages, 130))
 

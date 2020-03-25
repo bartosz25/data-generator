@@ -41,3 +41,7 @@ def generate_technical_context(visit):
 
 def generate_event_time(visit):
     return datetime.datetime.fromtimestamp(visit.event_time(), tz=datetime.timezone.utc).isoformat()
+
+
+def generate_keep_private_flag(visit):
+    return visit.keep_private

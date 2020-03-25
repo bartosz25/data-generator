@@ -11,7 +11,8 @@ def generate_event(visit):
         "page": generators.generate_visited_page(visit),
         "source": generators.generate_source(visit),
         "user": generators.generate_user_context(visit),
-        "technical": generators.generate_technical_context(visit)
+        "technical": generators.generate_technical_context(visit),
+        "keep_private": generators.generate_keep_private_flag(visit)
     }
     return event_dict
 
