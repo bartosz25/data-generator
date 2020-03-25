@@ -1,6 +1,6 @@
 .PHONY : setup_project
 setup_project:
-	python setup.py install
+	python setup.py bdist_wheel --universal
 
 .PHONE : clean_build
 clean_build:
@@ -23,3 +23,7 @@ reformat_all:
 
 test_coverage:
 	pytest --cov=data_generator data_generator/test
+
+
+build_kafka_runner_image:
+	docker build  -t data_generator:latest -f docker/kafka/Dockerfile .

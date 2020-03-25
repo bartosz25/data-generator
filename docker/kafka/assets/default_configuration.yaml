@@ -12,7 +12,7 @@ kafka:
 generation:
   late_data_percentage: 10
 dataset:
-  all_users: 10
+  all_users: 1000
   real_time_delta_seconds: -900
   session_duration_seconds:
     min: 10
