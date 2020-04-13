@@ -25,9 +25,9 @@ if __name__ == '__main__':
         return choice(flags)
 
 
-    output_topic_name = 'raw_data'
     configuration = KafkaWriterConfiguration(configuration['kafka'])
     configuration.create_or_recreate_topics()
+    output_topic_name = configuration.topics[0].name
 
 
     def get_random_duration_in_seconds():
