@@ -5,7 +5,7 @@ dataset:
   real_time_delta_seconds: -900
   session_duration_seconds:
     min: 10
-    max: 30
+    max: 300
   composition_percentage:
     incomplete: 2
     inconsistent: 2

@@ -84,9 +84,6 @@ def should_reinitialize_a_visit_with_random_duration():
     initial_attributes = {**first_visit.__dict__}
 
     dataset.reinitialize_visit(first_visit)
-    print(str(first_visit))
-    print(str(initial_attributes))
-    print(str(first_visit.__dict__))
 
     assert_that(first_visit.app_version).is_equal_to(initial_app_version)
     assert_that(first_visit.data_anomaly).is_equal_to(initial_anomaly)
@@ -112,3 +109,5 @@ def should_create_dataset_from_yaml_configuration():
     assert_that(data_quality_issues[DataAnomaly.MISSING]).is_equal_to(960)
     assert_that(data_quality_issues[DataAnomaly.INCOMPLETE_DATA]).is_equal_to(20)
     assert_that(data_quality_issues[DataAnomaly.INCONSISTENT_DATA]).is_equal_to(20)
+    assert_that(dataset._Dataset__duration_min).is_equal_to(10)
+    assert_that(dataset._Dataset__duration_max).is_equal_to(300)

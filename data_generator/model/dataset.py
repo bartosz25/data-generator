@@ -1,4 +1,3 @@
-from datetime import timedelta
 from random import shuffle, randrange
 
 from data_generator.helper.percentage import calculate_value
@@ -9,14 +8,14 @@ from data_generator.model.visit import Visit
 
 class Dataset():
     def __init__(self,
-                 duration_min_seconds, duration_max_minutes,
+                 duration_min_seconds, duration_max_seconds,
                  percentage_incomplete_data, percentage_inconsistent_data,
                  percentage_app_v1, percentage_app_v2,
                  users_number, timer):
         """
 
         :param duration_min_seconds: The min duration of the generated visits
-        :param duration_max_minutes: The max duration of the generated visits
+        :param duration_max_seconds: The max duration of the generated visits
         :param percentage_incomplete_data:
         :param percentage_inconsistent_data:
         :param percentage_app_v1:
@@ -24,8 +23,8 @@ class Dataset():
         :param users_number: The number of all users to generate in the dataset
         :param timer: `~data_generator.model.timer.Timer` implementation to use
         """
-        self.__duration_min = timedelta(seconds=duration_min_seconds).total_seconds()
-        self.__duration_max = timedelta(minutes=duration_max_minutes).total_seconds()
+        self.__duration_min = duration_min_seconds
+        self.__duration_max = duration_max_seconds
         self.timer = timer
 
         percentage_app_v3 = (100 - percentage_app_v1 - percentage_app_v2)
@@ -99,7 +98,7 @@ class Dataset():
         composition_configuration = dataset_configuration['composition_percentage']
         return Dataset(
             duration_min_seconds=duration_interval_configuration['min'],
-            duration_max_minutes=duration_interval_configuration['max'],
+            duration_max_seconds=duration_interval_configuration['max'],
             percentage_incomplete_data=composition_configuration['incomplete'],
             percentage_inconsistent_data=composition_configuration['inconsistent'],
             percentage_app_v1=versions_configuration['v1'],

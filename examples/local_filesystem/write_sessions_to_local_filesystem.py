@@ -15,7 +15,7 @@ logging.basicConfig(filename='/tmp/logs_writer.txt', level=logging.DEBUG, format
 
 if __name__ == '__main__':
     timer = Timer(-3*24*60*60)  # starting from 3 days ago
-    dataset = Dataset(duration_min_seconds=120, duration_max_minutes=10,
+    dataset = Dataset(duration_min_seconds=120, duration_max_seconds=600,
                       percentage_incomplete_data=2, percentage_inconsistent_data=2,
                       percentage_app_v1=20, percentage_app_v2=20,
                       users_number=10000, timer=timer
