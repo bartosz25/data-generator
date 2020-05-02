@@ -7,7 +7,7 @@ from assertpy import assert_that
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
 
-def should_not_recreate_topic_with_disabled_flags():
+def TODO_should_not_recreate_topic_with_disabled_flags():
     path = pathlib.Path(__file__).parent.absolute()
     with open('{}/kafka_writer_configuration.yaml'.format(path)) as file:
         configuration = yaml.load(file, Loader=yaml.FullLoader)
