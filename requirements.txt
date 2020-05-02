@@ -1,7 +1,7 @@
 assertpy>=0.14
 pytest
-#kafka-python>=1.4.4
-confluent-kafka==1.3.0
+kafka-python>=1.4.4
+#confluent-kafka==1.3.0
 flake8
 autopep8
 pytest-cov
