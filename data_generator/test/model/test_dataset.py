@@ -67,16 +67,27 @@ def should_create_correct_data_anomalies_distribution():
     assert_that(anomalies_count[DataAnomaly.INCONSISTENT_DATA]).is_equal_to(8)
 
 
+def should_create_keep_private_flags_distribution():
+    keep_private_flags_distribution = Dataset.create_keep_private_flags_distribution(50, 25)
+
+    keep_private_count = {True: 0, False: 0}
+    for flag in keep_private_flags_distribution:
+        keep_private_count[flag] += 1
+
+    assert_that(keep_private_count[True]).is_equal_to(13)
+    assert_that(keep_private_count[False]).is_equal_to(37)
+
+
 def should_create_a_correct_number_of_visits():
     dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
-                      percentage_app_v2=15, users_number=100, timer=Timer(-900))
+                      percentage_app_v2=15, users_number=100, timer=Timer(-900), no_data_consent_percentage=2)
 
     assert_that(dataset.visits).is_length(100)
 
 
 def should_reinitialize_a_visit_with_random_duration():
     dataset = Dataset(10, 30, percentage_incomplete_data=1, percentage_inconsistent_data=1, percentage_app_v1=10,
-                      percentage_app_v2=15, users_number=100, timer=Timer(-900))
+                      percentage_app_v2=15, users_number=100, timer=Timer(-900), no_data_consent_percentage=2)
     first_visit = dataset.visits[0]
 
     initial_app_version = first_visit.app_version

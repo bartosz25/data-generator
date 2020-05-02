@@ -24,3 +24,4 @@ dataset:
   versions_percentage:
     v1: 20
     v2: 20
+  users_no_data_consent_percentage: 2

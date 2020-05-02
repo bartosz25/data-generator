@@ -11,7 +11,7 @@ class Dataset():
                  duration_min_seconds, duration_max_seconds,
                  percentage_incomplete_data, percentage_inconsistent_data,
                  percentage_app_v1, percentage_app_v2,
-                 users_number, timer):
+                 users_number, timer, no_data_consent_percentage):
         """
 
         :param duration_min_seconds: The min duration of the generated visits
@@ -37,6 +37,7 @@ class Dataset():
             self.create_data_anomalies_distribution(users_number,
                                                     incomplete_data_percentage=percentage_incomplete_data,
                                                     inconsistent_data_percentage=percentage_inconsistent_data)
+        self.consent_flags = self.create_keep_private_flags_distribution(users_number, no_data_consent_percentage)
 
         self.visits = self.create_initial_visits(users_number)
         self.pages = self.create_page_map()
@@ -78,12 +79,20 @@ class Dataset():
         shuffle(data_anomalies_distribution)
         return data_anomalies_distribution
 
+    @staticmethod
+    def create_keep_private_flags_distribution(users_number, no_consent_users):
+        no_data_consent_number = calculate_value(users_number, no_consent_users)
+        consent_flags = [True] * no_data_consent_number + [False] * (users_number - no_data_consent_number)
+        shuffle(consent_flags)
+        return consent_flags
+
     def create_initial_visits(self, users_number):
         visits = []
         for user_id in range(0, users_number):
             visit_duration = randrange(self.__duration_min, self.__duration_max)
             visits.append(Visit(visit_duration_seconds=visit_duration, app_version=self.versions_to_distribute[user_id],
-                                data_anomaly=self.data_anomalies_distribution[user_id], timer=self.timer))
+                                data_anomaly=self.data_anomalies_distribution[user_id], timer=self.timer,
+                                keep_private=self.consent_flags[user_id]))
 
         return visits
 
@@ -104,5 +113,6 @@ class Dataset():
             percentage_app_v1=versions_configuration['v1'],
             percentage_app_v2=versions_configuration['v2'],
             users_number=dataset_configuration['all_users'],
-            timer=Timer(latency_seconds=dataset_configuration['real_time_delta_seconds'])
+            timer=Timer(latency_seconds=dataset_configuration['real_time_delta_seconds']),
+            no_data_consent_percentage=dataset_configuration['users_no_data_consent_percentage']
         )

@@ -6,7 +6,7 @@ from data_generator.model.visit import Visit
 
 
 def should_generate_event_for_a_complete_visit():
-    visit = Visit(30, 'v1', entities.DataAnomaly.INCOMPLETE_DATA, timer=Timer(-120))
+    visit = Visit(30, 'v1', entities.DataAnomaly.INCOMPLETE_DATA, timer=Timer(-120), keep_private=False)
 
     event_dict = entities.generate_event(visit)
 

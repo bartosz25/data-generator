@@ -2,12 +2,13 @@ from assertpy import assert_that
 
 from data_generator.model.entities import DataAnomaly
 from data_generator.model.generators import generate_visit_id, generate_user_id, generate_source, \
-    generate_user_context, generate_technical_context, generate_event_time, generate_visited_page
+    generate_user_context, generate_technical_context, generate_event_time, generate_visited_page, \
+    generate_keep_private_flag
 from data_generator.model.timer import Timer
 from data_generator.model.visit import Visit
 
 complete_visit = Visit(visit_duration_seconds=120, app_version='v1', data_anomaly=DataAnomaly.MISSING,
-                       timer=Timer(-900))
+                       timer=Timer(-900), keep_private=False)
 
 
 def should_generate_consistent_id_between_2_calls():
@@ -63,3 +64,10 @@ def should_generate_visited_page():
     visited_page = generate_visited_page(complete_visit)
 
     assert_that(visited_page).contains_key('previous', 'current')
+
+
+def should_generate_immutable_keep_private_flag():
+    keep_private_flag_1 = generate_keep_private_flag(complete_visit)
+    keep_private_flag_2 = generate_keep_private_flag(complete_visit)
+
+    assert_that(keep_private_flag_1).is_equal_to(keep_private_flag_2)
