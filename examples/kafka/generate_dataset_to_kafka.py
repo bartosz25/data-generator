@@ -3,17 +3,18 @@ import os
 # If you have any better idea how to achieve that, please comment
 import sys
 from random import randint, choice
+from time import sleep
 
 import yaml
 
-sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
+sys.path.append(os.path.abspath(os.path.join('..', 'data_generator')))
 
 from data_generator.model.unordered_data import UnorderedDataContainer
 from data_generator.model.dataset import Dataset
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
 if __name__ == '__main__':
-    with open('./configuration.yaml') as file:
+    with open('/home/data_generator/run/kafka/configuration.yaml') as file:
         configuration = yaml.load(file, Loader=yaml.FullLoader)
         print('Configuration = {}'.format(configuration))
 
@@ -24,7 +25,8 @@ if __name__ == '__main__':
         flags = [0] * 90 + [1] * 10
         return choice(flags)
 
-
+    # give Kafka 30 seconds to start
+    sleep(30)
     configuration = KafkaWriterConfiguration(configuration['kafka'])
     configuration.create_or_recreate_topics()
     output_topic_name = configuration.topics[0].name

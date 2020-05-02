@@ -1,7 +1,7 @@
 kafka:
-  broker: localhost:29092
+  broker: kafka:9092
   topics:
-    raw_data:
+    valid_data:
       partitions: 5
       replication: 1
       recreate: false

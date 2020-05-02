@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  generator:
+    image: 'data_generator:latest'
+    depends_on:
+      - kafka
+    volumes:
+      - ./configuration.yaml:/home/data_generator/run/kafka/configuration.yaml
   zookeeper:
     image: 'bitnami/zookeeper:3'
     ports:
@@ -19,6 +25,8 @@ services:
     volumes:
       # This volume is needed to persist data between broker's restarts
       - 'kafka_data_generator:/bitnami'
+      - ./scripts/setup_context.sh:/docker-entrypoint-initdb.d/setup_context.sh
+      - ./scripts/start_topics.sh:/start_topics.sh
     environment:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes

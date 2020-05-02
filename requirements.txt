@@ -7,3 +7,4 @@ autopep8
 pytest-cov
 boto3
 wheel
+pyyaml
