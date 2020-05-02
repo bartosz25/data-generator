@@ -13,7 +13,7 @@ from data_generator.model.timer import Timer
 from data_generator.model.dataset import Dataset
 
 if __name__ == '__main__':
-    dataset = Dataset(duration_min_seconds=10, duration_max_minutes=30,
+    dataset = Dataset(duration_min_seconds=10, duration_max_seconds=300,
                       percentage_incomplete_data=2, percentage_inconsistent_data=2,
                       percentage_app_v1=20, percentage_app_v2=20,
                       users_number=3000, timer=Timer(latency_seconds=-900)

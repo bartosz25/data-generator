@@ -25,19 +25,23 @@ if __name__ == '__main__':
         return choice(flags)
 
 
-    output_topic_name = 'raw_data'
     configuration = KafkaWriterConfiguration(configuration['kafka'])
     configuration.create_or_recreate_topics()
+    output_topic_name = configuration.topics[0].name
 
 
     def get_random_duration_in_seconds():
         return randint(1, 10)
 
+    def is_valid_log():
+        flags = [True] * 1000 + [False] * 2
+        return choice(flags)
+
 
     while True:
         for index, visit in enumerate(dataset.visits):
             if visit.output_log_to_the_sink():
-                action = visit.generate_new_action(dataset.pages, get_random_duration_in_seconds())
+                action = visit.generate_new_action(dataset.pages, get_random_duration_in_seconds(), is_valid_log())
                 unordered_data_container.wrap_action((visit.visit_id, action),
                                                      lambda generated_action: configuration.send_message(
                                                          output_topic_name,

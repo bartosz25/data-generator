@@ -6,7 +6,7 @@ from data_generator.model.visit import Visit
 
 
 def should_create_visit_with_incomplete_data():
-    visit = Visit(30, 'v1', DataAnomaly.INCOMPLETE_DATA, timer=Timer(-900))
+    visit = Visit(30, 'v1', DataAnomaly.INCOMPLETE_DATA, timer=Timer(-900), keep_private=False)
 
     incomplete_fields_candidates = [visit.device, visit.network, visit.browser, visit.source]
 
@@ -16,7 +16,7 @@ def should_create_visit_with_incomplete_data():
 
 
 def should_create_visit_with_inconsistent_data():
-    visit = Visit(30, 'v1', DataAnomaly.INCONSISTENT_DATA, timer=Timer(-900))
+    visit = Visit(30, 'v1', DataAnomaly.INCONSISTENT_DATA, timer=Timer(-900), keep_private=False)
     def is_dict(field): return type(field) is dict
     def starts_with_www(field): return field.startswith('www.')
 
