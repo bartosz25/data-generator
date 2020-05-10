@@ -4,11 +4,20 @@ The goal of this project is to generate semi-structured JSON data so you could u
 simulate real world behavior, you can specify the correctness of the generated dataset, either by telling how
 incomplete or inconsistent with the perfect schema each record should be.
 
-# Dataset characteristics
+# Executing the generators
+To execute the available generators, you can either use the scripts provided in `examples` directory or 
+build Docker images like defined below.
 
-# Sinks
-## Apache Kafka
-
+## Building Docker images
+### Apache Kafka sink
+To create a dockerized environment of the generator, execute the following commands:
+```
+make build_kafka_runner_image
+cd examples/kafka/
+docker-compose down --volumes
+docker-compose up
+```
+To change the configuration, modify `examples/kafka/configuration.yaml` file.
 
 # Test
 ## PyCharm

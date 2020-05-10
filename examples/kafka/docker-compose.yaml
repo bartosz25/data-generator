@@ -2,7 +2,7 @@ version: '3'
 
 services:
   generator:
-    image: 'data_generator:latest'
+    image: 'kafka_data_generator:0.1'
     depends_on:
       - kafka
     volumes:
