@@ -32,7 +32,7 @@ For the configuration without data quality issues, the generated events wil have
 | **-device**   | structure          |                                                                                                           |
 | --type   | text          | The browser language of the user.                                                                                                            |
 | --version   | text          | The browser language of the user.                                                                                                            |
-| -lang   | text          | The browser language of the user.                                                                                                            |
+| --lang   | text          | The browser language of the user.                                                                                                            |
 
 
 
