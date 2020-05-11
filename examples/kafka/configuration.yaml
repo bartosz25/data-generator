@@ -1,7 +1,7 @@
 kafka:
-  broker: localhost:29092
+  broker: kafka:9092
   topics:
-    raw_data:
+    valid_data:
       partitions: 5
       replication: 1
       recreate: false
@@ -12,7 +12,7 @@ kafka:
 generation:
   late_data_percentage: 10
 dataset:
-  all_users: 1000
+  all_users: 10
   real_time_delta_seconds: -900
   session_duration_seconds:
     min: 10

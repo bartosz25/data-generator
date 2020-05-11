@@ -5,7 +5,7 @@ setup(
     description="Generates the data simulating user visits of a website",
     author="Bartosz Konieczny",
     packages=find_packages(),
-    install_requires=['docutils>=0.3', 'confluent-kafka==0.11.6'],
+    install_requires=['docutils==0.10', 'confluent-kafka==0.11.6', 'boto3'],
     project_urls={
         'Contact form': 'https://www.waitingforcode.com/static/contact'
     }
