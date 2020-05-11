@@ -23,10 +23,17 @@ For the configuration without data quality issues, the generated events wil have
 | **user**     | structure       |                                                                                                                                                    |
 | -ip          | text            | The IP address of the user.                                                                                                                        |
 | -latitude    | double          | The geographical latitude of the user.                                                                                                             |
-| -longitude   | double          | The geographical longitude of the user.                                                                                                            |
+| -longitude   | double          | The geographical longitude of the user.                                                                                                              |
+| **technical**     | structure       |                                                                                                                                                    |
+| -browser          | text            | The browser name.                                                                                                                        |
+| -os    | text          | The operating system of the user.                                                                                                         |
+| -lang   | text          | The browser language of the user.                                                                                                            |
+| -network | text | The network type, can be one of: adsl, fiber_optic, 3g, 4g
+| **-device**   | structure          |                                                                                                           |
+| --type   | text          | The browser language of the user.                                                                                                            |
+| --version   | text          | The browser language of the user.                                                                                                            |
+| -lang   | text          | The browser language of the user.                                                                                                            |
 
-
-## Data issues
 
 
 # Executing the generators
