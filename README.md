@@ -8,13 +8,6 @@ incomplete or inconsistent with the perfect schema each record should be.
 ## Schema
 For the configuration without data quality issues, the generated events wil have the following schema:
 
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
-
 | Field name   | Field type      |  Explanation                                                                                                                                       |
 |--------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 | visit_id     | text            | The identifier for a user's visit. If a user makes multiple actions without leaving the website, this identifier remains the same for all actions. |
@@ -34,7 +27,7 @@ For the configuration without data quality issues, the generated events wil have
 
 
 ## Data issues
-### 
+
 
 # Executing the generators
 To execute the available generators, you can either use the scripts provided in `examples` directory or 
