@@ -19,7 +19,7 @@ For the configuration without data quality issues, the generated events wil have
 | -previous    | text - optional | The previously visited page. May be null if it's the first user's visit.                                                                           |
 | **source**   | structure       |                                                                                                                                                    |
 | -site        | text            | The visited website address.                                                                                                                       |
-| -api_version | text            | The API version that sent the event.                                                                                                               |
+| -api_version | text            | The API version that sent the event. Can be: v1, v2 or v3.                                                                                                              |
 | **user**     | structure       |                                                                                                                                                    |
 | -ip          | text            | The IP address of the user.                                                                                                                        |
 | -latitude    | double          | The geographical latitude of the user.                                                                                                             |
@@ -34,7 +34,46 @@ For the configuration without data quality issues, the generated events wil have
 | --version   | text          | The browser language of the user.                                                                                                            |
 | --lang   | text          | The browser language of the user.                                                                                                            |
 
+## Data issues
+To configure data issues, you have to define these properties:
+```yaml
+dataset:
+  # ...
+  composition_percentage:
+    incomplete: 2
+    inconsistent: 2
+    fully_valid: 96
+```
 
+What's the difference between them? 
+
+An **incomplete** event misses one or more of the following fields: 
+(`device`, `network`, `technical.browser`, `source`).
+
+An **inconsistent** event has the following data issues:
+* `device`
+    * can be defined as `{"type": {"name": "string"}, "version": string"}}`
+* `network`
+    * can be defined as `{"short_name": "string", "long_name": "string"}`
+* `browser`
+    * can be defined as `{"name": "string", "language": "string"}` and in that case, the `technical.lang` is missing
+* `source`
+    * can be defined as `www.name of the website` whereas the expected format doesn't include `www`
+
+## Users without consent
+With `users_no_data_consent_percentage` you can define the percentage of the users who would like to keep
+their data private. For them, the `keep_private` field will be set to true. In the snippet below, 2% of 10
+users will have this flag set to true:
+```yaml
+dataset:
+  all_users: 10
+  # ...
+  users_no_data_consent_percentage: 2
+```
+
+## App versions
+As for this writing, the `versions_percentage` part doesn't introduce any differences and it's here just to simulate some
+variability in case of app version analytics axis. 
 
 # Executing the generators
 To execute the available generators, you can either use the scripts provided in `examples` directory or 
