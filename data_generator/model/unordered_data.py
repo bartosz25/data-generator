@@ -3,7 +3,9 @@ from random import choice
 
 class UnorderedDataContainer:
     """
-    :param must_buffer_data: A function that should return True if the verified action should be buffered.
+    :param must_buffer_data: A function that should return True if the action should be buffered, False if it
+                             can be sent directly to the sink. All buffered actions can be later delivered to the sink
+                             from send_buffered_actions method.
     """
 
     def __init__(self, must_buffer_data):

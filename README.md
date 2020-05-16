@@ -71,6 +71,37 @@ dataset:
   users_no_data_consent_percentage: 2
 ```
 
+## Late data
+Late data can be simulated with `data_generator.model.unordered_data.UnorderedDataContainer` class. You have to
+create the instance with a method controlling whether an event should be buffered or sent directly to the sink. All
+buffered events are then considered as late and, therefore, unordered events.
+
+You can find an example of its use in `examples/kafka/generated_dataset_to_kafka.py`:
+```python
+# create the container from the main configuration file 
+# generation > late_data_percentage will be used to determine whether the action should be sent directly or not
+unordered_data_container = UnorderedDataContainer.from_yaml_with_random_distribution(configuration)
+
+# Method to control if the late data should be delivered
+def should_send_late_data_to_kafka():
+    flags = [0] * 90 + [1] * 10
+    return choice(flags)
+
+while True:
+    # usual events generation
+    action = visit.generate_new_action(dataset.pages, get_random_duration_in_seconds(), is_valid_log())
+    unordered_data_container.wrap_action((visit.visit_id, action),
+                                         lambda generated_action: configuration.send_message(
+                                             output_topic_name,
+                                             generated_action[0],
+                                             generated_action[1]
+                                         ))
+    
+    if should_send_late_data_to_kafka():
+        unordered_data_container.send_buffered_actions(
+            lambda late_action: configuration.send_message(output_topic_name, late_action[0], late_action[1]))
+```
+
 ## App versions
 As for this writing, the `versions_percentage` part doesn't introduce any differences and it's here just to simulate some
 variability in case of app version analytics axis. 
