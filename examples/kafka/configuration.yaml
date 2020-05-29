@@ -1,7 +1,7 @@
 kafka:
   broker: kafka:9092
   topics:
-    valid_data:
+    raw_data:
       partitions: 5
       replication: 1
       recreate: false
