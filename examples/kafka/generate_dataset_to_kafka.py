@@ -14,7 +14,7 @@ from data_generator.model.dataset import Dataset
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
 if __name__ == '__main__':
-    with open('/home/data_generator/run/kafka/configuration.yaml') as file:
+    with open(os.path.join('configuration.yaml')) as file:
         configuration = yaml.load(file, Loader=yaml.FullLoader)
         print('Configuration = {}'.format(configuration))
 
