@@ -115,11 +115,29 @@ build Docker images like defined below.
 To create a dockerized environment of the generator, execute the following commands:
 ```
 make build_kafka_runner_image
-cd examples/kafka/
+cd examples/kafka-docker
 docker-compose down --volumes
 docker-compose up
 ```
 To change the configuration, modify `examples/kafka/configuration.yaml` file.
+
+The broker will be available at `localhost:29092`.
+
+## Running Python scripts
+### Apache Kafka sink
+To start Apache Kafka sink from the script, execute the following commands:
+* start the broker
+```
+cd examples/kafka
+docker-compose down --volumes
+docker-compose up
+```
+The broker will be available at `localhost:29092`.
+
+* start the generator
+```
+python examples/kafka/generate_dataset_to_kafka.py
+```
 
 # Test
 ## PyCharm

@@ -24,8 +24,8 @@ RUN /bin/bash -c "source .venv/bin/activate"
 
 RUN pip3 install -r requirements.txt
 
-COPY examples ./examples
-RUN ls ./
+COPY docker/kafka/assets/generate_dataset_to_kafka.py ./
+RUN ls ./data_generator
 
-ENTRYPOINT python3 /home/data_generator/examples/kafka/generate_dataset_to_kafka.py
+ENTRYPOINT python3 /home/data_generator/generate_dataset_to_kafka.py
 

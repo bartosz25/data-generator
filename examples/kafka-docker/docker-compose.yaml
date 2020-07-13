@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  generator:
+    image: 'kafka_data_generator:0.2'
+    depends_on:
+      - kafka
+    volumes:
+      - ./configuration.yaml:/home/data_generator/run/kafka/configuration.yaml
   zookeeper:
     image: 'bitnami/zookeeper:3'
     ports:
