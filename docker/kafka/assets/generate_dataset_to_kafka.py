@@ -1,20 +1,19 @@
 import os
-# Hack to be able to execute data-generator script without needing to compile it
-# If you have any better idea how to achieve that, please comment
 import sys
+
+#sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
+
 from random import randint, choice
 from time import sleep
 
 import yaml
 
-sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
-
-from data_generator.model.unordered_data import UnorderedDataContainer
 from data_generator.model.dataset import Dataset
+from data_generator.model.unordered_data import UnorderedDataContainer
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
 if __name__ == '__main__':
-    with open('./examples/kafka/configuration.yaml') as file:
+    with open('/home/data_generator/run/kafka/configuration.yaml') as file:
         configuration = yaml.load(file, Loader=yaml.FullLoader)
         print('Configuration = {}'.format(configuration))
 
