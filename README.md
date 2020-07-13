@@ -119,7 +119,7 @@ cd examples/kafka-docker
 docker-compose down --volumes
 docker-compose up
 ```
-To change the configuration, modify `examples/kafka/configuration.yaml` file.
+To change the configuration, modify `examples/kafka-docker/configuration.yaml` file.
 
 The broker will be available at `localhost:29092`.
 
@@ -138,6 +138,7 @@ The broker will be available at `localhost:29092`.
 ```
 python examples/kafka/generate_dataset_to_kafka.py
 ```
+To change the configuration, modify `examples/kafka/configuration.yaml` file.
 
 # Test
 ## PyCharm
