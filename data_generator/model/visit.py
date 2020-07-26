@@ -123,12 +123,18 @@ class Visit:
         self.__apply_anomalies()
 
     def __apply_anomalies(self):
-        anomaly_candidates = ['device', 'network', 'browser', 'source']
-        properties_to_change = random.sample(anomaly_candidates, k=2)
+        inconsistent_data_anomaly_candidates = ['device', 'network', 'browser', 'source']
         if self.data_anomaly == DataAnomaly.INCOMPLETE_DATA:
+            incomplete_data_anomaly_candidates = inconsistent_data_anomaly_candidates + [
+                'visit_id', 'user_id'
+            ]
+            properties_to_change = random.sample(incomplete_data_anomaly_candidates, k=2)
             for property_to_remove in properties_to_change:
-                setattr(self, property_to_remove, None)
+                removed_value = getattr(self, '_get_remove_value_for_{}'.format(property_to_remove),
+                                        lambda: None)
+                setattr(self, property_to_remove, removed_value())
         elif self.data_anomaly == DataAnomaly.INCONSISTENT_DATA:
+            properties_to_change = random.sample(inconsistent_data_anomaly_candidates, k=2)
             for property_to_replace in properties_to_change:
                 getattr(self, '_change_{}'.format(property_to_replace))()
 
@@ -144,6 +150,9 @@ class Visit:
 
     def _change_source(self):
         self.source = 'www.{}'.format(self.source)
+
+    def _get_remove_value_for_user_id(self):
+        return 0
 
     def __repr__(self):
         return 'Visit: {duration} seconds, {version}, {anomaly}'.format(duration=self.duration_seconds,
