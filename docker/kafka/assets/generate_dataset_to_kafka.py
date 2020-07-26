@@ -1,8 +1,3 @@
-import os
-import sys
-
-#sys.path.append(os.path.abspath(os.path.join('..', 'data-generator')))
-
 from random import randint, choice
 from time import sleep
 
