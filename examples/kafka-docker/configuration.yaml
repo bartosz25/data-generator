@@ -4,7 +4,7 @@ kafka:
     raw_data:
       partitions: 5
       replication: 1
-      recreate: false
+      recreate: true
   producer:
     configuration:
       queue.buffering.max.ms: 2000 # flush buffer every 2 seconds

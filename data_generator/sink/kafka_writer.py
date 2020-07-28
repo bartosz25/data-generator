@@ -80,13 +80,16 @@ class KafkaWriterConfiguration:
         def delivery_callback(error, result):
             if error:
                 logger.error("Record was not correctly delivered: %s", error)
+        # if the key is missing, it will fail with "TypeError: encoding without a string argument" error
+        # replace the missing key by some dummy value
+        message_key = key if key else 'empty'
         try:
-            self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
+            self.producer.produce(topic=topic_name, key=bytes(message_key, encoding='utf-8'),
                                   value=bytes(message, encoding='utf-8'),
                                   on_delivery=delivery_callback)
         except BufferError:
             self.producer.flush()
-            self.producer.produce(topic=topic_name, key=bytes(key, encoding='utf-8'),
+            self.producer.produce(topic=topic_name, key=bytes(message_key, encoding='utf-8'),
                                   value=bytes(message, encoding='utf-8'), on_delivery=delivery_callback)
 
     def __repr__(self):

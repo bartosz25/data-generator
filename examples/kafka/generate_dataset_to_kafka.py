@@ -13,8 +13,11 @@ from data_generator.model.unordered_data import UnorderedDataContainer
 from data_generator.model.dataset import Dataset
 from data_generator.sink.kafka_writer import KafkaWriterConfiguration
 
+
 if __name__ == '__main__':
-    with open('./examples/kafka/configuration.yaml') as file:
+    pathname = os.path.dirname(sys.argv[0])
+    configuration_file_path = os.path.join('{}/configuration.yaml'.format(os.path.abspath(pathname)))
+    with open(configuration_file_path) as file:
         configuration = yaml.load(file, Loader=yaml.FullLoader)
         print('Configuration = {}'.format(configuration))
 

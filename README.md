@@ -48,7 +48,8 @@ dataset:
 What's the difference between them? 
 
 An **incomplete** event misses one or more of the following fields: 
-(`device`, `network`, `technical.browser`, `source`).
+(`device`, `network`, `technical.browser`, `source`, `visit_id`, `user_id`). All the fields except `user_id` 
+are missing. `user_id` is set to 0.
 
 An **inconsistent** event has the following data issues:
 * `device`

@@ -8,7 +8,8 @@ from data_generator.model.visit import Visit
 def should_create_visit_with_incomplete_data():
     visit = Visit(30, 'v1', DataAnomaly.INCOMPLETE_DATA, timer=Timer(-900), keep_private=False)
 
-    incomplete_fields_candidates = [visit.device, visit.network, visit.browser, visit.source]
+    incomplete_fields_candidates = [visit.visit_id, visit.user_id,
+                                    visit.device, visit.network, visit.browser, visit.source]
 
     incomplete_fields = list(filter(lambda value: not value, incomplete_fields_candidates))
 
