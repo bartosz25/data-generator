@@ -171,7 +171,7 @@ Desactivate the virtualenv:
 ```
 deactivate
 ```
-
+## Code checks
 Check code format:
 ```
 make lint_all
@@ -181,3 +181,7 @@ Reformat code:
 ```
 make reformat_all
 ```
+
+## Pre-commit hook setup
+The hook will execute the code formatting before the commit and the unit tests before the push. To install
+it, please use [Pre-commit plugin](https://pre-commit.com/) and `pre-commit install` command.
