@@ -26,4 +26,4 @@ test_coverage:
 
 
 build_kafka_runner_image:
-	docker build  -t kafka_data_generator:0.3 -f docker/kafka/Dockerfile .
+	docker build  -t kafka_data_generator:0.4 -f docker/kafka/Dockerfile .
