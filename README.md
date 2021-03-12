@@ -30,9 +30,9 @@ For the configuration without data quality issues, the generated events wil have
 | -lang   | text          | The browser language of the user.                                                                                                            |
 | -network | text | The network type, can be one of: adsl, fiber_optic, 3g, 4g
 | **-device**   | structure          |                                                                                                           |
-| --type   | text          | The browser language of the user.                                                                                                            |
-| --version   | text          | The browser language of the user.                                                                                                            |
-| --lang   | text          | The browser language of the user.                                                                                                            |
+| --type   | text          | The device type: pc, tablet, smartphone.                                                                                                            |
+| --version   | text          | The device version, e.g, Apple iPhone XS; is missing for `pc`.                                                                                                            |
+
 
 ## Data issues
 To configure data issues, you have to define these properties:
@@ -50,6 +50,7 @@ What's the difference between them?
 An **incomplete** event misses one or more of the following fields: 
 (`device`, `network`, `technical.browser`, `source`, `visit_id`, `user_id`). All the fields except `user_id` 
 are missing. `user_id` is set to 0.
+Please notice the lack of `device.version` field if the `device.type` is `pc`.
 
 An **inconsistent** event has the following data issues:
 * `device`
